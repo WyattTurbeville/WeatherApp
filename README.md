@@ -1,6 +1,24 @@
 # Weather Map
 
+Project Title: Radar Earth
 
+Objective: This project will try to focus on creating a map that works similiar to google earth where you can zoom and click and get information about areas but in an to attempt to try and allow users to click anywhere in the world and get realtime information about the weather. This will take the form of a website that gets information from other sites to collect weather information.
+
+    Goal 1: Create a website that allows functionality of a system like google earth
+    Goal 2:Implement an addition of weather applications that are up to date and realtime weather
+    Goal 3:Create a fully functional nice looking website that accurately shows the weather in an area chosen by the user
+
+Customer(s) and other Stakeholders: Possible customer base could be some form of internet group in pair with a group of apps make it as sort of an extension of sorts.
+
+Technology:
+-Tech Stack-
+Language: Python
+Web Framework: Django
+Frontend: React Framework
+IDE: VS Code
+Database: MySQL
+
+Scope: The initial scope will be a map of the USA.
 
 ## Getting started
 
