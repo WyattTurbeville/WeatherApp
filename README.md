@@ -10,6 +10,13 @@ Objective: This project will try to focus on creating a map that works similiar 
 
 Customer(s) and other Stakeholders: Possible customer base could be some form of internet group in pair with a group of apps make it as sort of an extension of sorts.
 
+Project Members:
+Tommy Merchak
+Nathaniel Neff
+Wyatt Turbeville
+Lyndon Wright
+Lyndon Wright
+
 Technology:
 -Tech Stack-
 Language: Python
