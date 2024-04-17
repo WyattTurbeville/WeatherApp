@@ -1,0 +1,76 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Weather Map</title>
+</head>
+<body>
+    
+    <h1>The slog of this ._.</h1>
+
+    <p id="location"></p>
+
+    <script>
+        //When they open the window prompts user for location
+        window.onload = function() {
+            getLocation();
+        };
+        //Asks user
+        function getLocation() {
+            if (navigator.geolocation) {
+                navigator.geolocation.getCurrentPosition(showPosition, showError);
+            } else {
+                alert("Geolocation is not supported by this browser.");
+            }
+        }
+
+        function showPosition(position) {
+            //This works
+            var latitude = position.coords.latitude;
+            var longitude = position.coords.longitude;
+            console.log("Latitude: " + latitude + ", Longitude: " + longitude);
+
+            // Perform reverse geocoding using HERE
+            //Currently not working
+            var appId = ZjP7rpnND8waRXRKHMIK;
+            var appCode = Z8z3gCe8a2_rxh1tjbkHrL_AU_jjZoS0MSXGlPYym_8;
+            var hereGeocodeUrl = `https://reverse.geocoder.ls.hereapi.com/6.2/reversegeocode.json?prox=${latitude},${longitude}&mode=retrieveAddresses&maxresults=1&gen=9&app_id=${appId}&app_code=${appCode}`;
+
+            fetch(hereGeocodeUrl)
+                .then(response => response.json())
+                .then(data => {
+                    console.log(data); // Log the response to inspect it
+                    if (data.Response && data.Response.View && data.Response.View.length > 0 && data.Response.View[0].Result && data.Response.View[0].Result.length > 0) {
+                        var locationDetails = data.Response.View[0].Result[0].Location.Address;
+                        var city = locationDetails.City;
+                        var country = locationDetails.Country;
+                        document.getElementById("location").innerHTML = "City: " + city + ", Country: " + country;
+                    } else {
+                        document.getElementById("location").innerHTML = "Location information not available.";
+                    }
+                })
+                .catch(error => {
+                    console.error('Error:', error);
+                });
+        }
+        //Error checking for location accepts/deny
+        function showError(error) {
+            switch(error.code) {
+                case error.PERMISSION_DENIED:
+                    alert("User denied the request for geolocation.");
+                    break;
+                case error.POSITION_UNAVAILABLE:
+                    alert("Location information is unavailable.");
+                    break;
+                case error.TIMEOUT:
+                    alert("The request to get user location timed out.");
+                    break;
+                case error.UNKNOWN_ERROR:
+                    alert("An unknown error occurred.");
+                    break;
+            }
+        }
+    </script>
+</body>
+</html>
