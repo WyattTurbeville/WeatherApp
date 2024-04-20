@@ -2,7 +2,6 @@ from flask import Flask
 from flask import render_template
 from geopy.geocoders import Nominatim
 
-"""
 app = Flask(__name__)
 
 @app.route('/')
@@ -12,11 +11,3 @@ def index():
 @app.route('/hello/<name>')
 def hello(name=None):
     return render_template('hello.html', name=name)
-"""
-
-geolocator = Nominatim(user_agent="Radar-Earth")
-
-location = geolocator.geocode("54022, usa")
-
-print(location.address)
-print((location.latitude, location.longitude))
