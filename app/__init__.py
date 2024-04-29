@@ -1,6 +1,5 @@
 from flask import Flask
 from flask import render_template
-from geopy.geocoders import Nominatim
 
 app = Flask(__name__)
 
