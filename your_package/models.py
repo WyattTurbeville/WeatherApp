@@ -123,13 +123,26 @@ class DataProcessor: #populates and returns Location object
 
 ##########################
 
-userSearch = "54022, usa" #input from the user to search location
+class DataPipeline:
+    def __init__(self):
+        pass
+    
+    def totalProcess(self, userSearch):
+        search_processor = SearchProcessor()
+        data_processor = DataProcessor()
 
-search_processor = SearchProcessor()
-data_processor = DataProcessor()
-
-file = search_processor.process_search(userSearch)
-place = data_processor.process_data(file)
-value = place.weatherDataSet[1]
-
-print(value.temp)
+        file = search_processor.process_search(userSearch)
+        place = data_processor.process_data(file)
+        value = place.weatherDataSet[0]
+        #so as it turns out, the json index doesnt actually start at local time
+        #nor does it start at a set time such as UTC-11
+        #it varies from office to office for whatever reason, but the problem is this:
+        #if you go to pull data from now to +12h, you must need to know WHERE
+        #in the index "now" starts at, bc it is not 0
+        
+        #problem solved, need to impliment this:
+        #location > obtain timezone attribute from Nominatim > create pytz timezone object > 
+        #get current time in timezone using datetime > convert to utc
+        #this utc can then be used to find where to start the index at :)
+        
+        return value
