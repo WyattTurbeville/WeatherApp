@@ -1,0 +1,81 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Contact Us - Radar Earth Weather App</title>
+    <style>
+        body {
+            font-family: 'Arial', sans-serif;
+            margin: 0;
+            padding: 0;
+            background: #fff;
+            color: #333;
+        }
+        .contact-container {
+            background: #fff;
+            padding: 20px;
+            border-radius: 8px;
+            box-shadow: 0 0 10px rgba(0,0,0,0.1);
+            width: 60%;
+            margin: 50px auto;
+            border-top: 10px solid #cc0000; 
+        }
+        h1 {
+            color: #cc0000; 
+        }
+        p {
+            margin: 10px 0;
+            font-size: 16px;
+        }
+        form {
+            margin-top: 20px;
+        }
+        label {
+            font-weight: bold;
+        }
+        input[type="text"], input[type="email"], textarea {
+            width: 100%;
+            padding: 8px;
+            margin-top: 10px;
+            box-sizing: border-box;
+            border-radius: 4px;
+            border: 1px solid #ccc;
+        }
+        input[type="submit"] {
+            background-color: #cc0000; 
+            color: white;
+            border: none;
+            padding: 10px 20px;
+            border-radius: 4px;
+            cursor: pointer;
+            margin-top: 10px;
+        }
+        input[type="submit"]:hover {
+            background-color: #990000;
+        }
+    </style>
+</head>
+<body>
+    <div class="contact-container">
+        <h1>Contact Radar Earth Weather App Support</h1>
+        <p>If you're experiencing issues with the Radar Earth Weather
+             App or have suggestions, please let us know.
+             Our team is here to help enhance your experience.</p>
+        
+        <form action="#" method="post">
+            <label for="email">UWRF Email:</label>
+            <input type="email" id="email" name="email" placeholder="yourname@my.uwrf.edu" required>
+
+            <label for="issue">Describe the Issue or Feedback:</label>
+            <textarea id="issue" name="issue" rows="4" placeholder="Please provide details about the issue or your feedback." required></textarea>
+
+            <input type="submit" value="Submit">
+        </form>
+
+        <p>Thank you for reaching out to us - The Radar Earth IT Team. 
+            We appreciate your feedback and are 
+            committed to improving your app experience.</p>
+    </div>
+</body>
+</html>
