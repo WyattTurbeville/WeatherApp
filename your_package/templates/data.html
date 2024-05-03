@@ -33,10 +33,17 @@
     a:hover {
         text-decoration: underline;
     }
+    .spinning-globe {
+            position: absolute;
+            top: 20px; /* Adjust as needed */
+            right: 20px; /* Adjust as needed */
+            z-index: 999; /* Ensure it's above other content */
+        }
 </style>
 </head>
 
 <body>
+    <img src="spinningglobe.gif" alt="Spinning Globe" class="spinning-globe">
     <h2>Temp at location:</h2>
     <p>{{ temp }} celcius</p>
 </body>
