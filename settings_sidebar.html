@@ -1,0 +1,200 @@
+<!DOCTYPE html>
+<html lang="en-US">
+
+<head>
+    <meta charset="UTF-8">
+    <title>Settings</title>
+    <link href="https://unpkg.com/boxicons@2.1.4/css/boxicons.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="settings_style.css">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+</head>
+
+<body>
+    <div class="sidebar">
+        <div class="top">
+            <div class="logo">
+                <i class='bx bx-cog' id='cog'></i>
+            </div>
+            <h1>Settings</h1>
+        </div>
+        <div>
+            <ul>
+                <li>
+                    <a href="#" id="toggleTemp">
+                        <i class='bx bxs-thermometer'></i>
+                        <span class="bar-item" id="tempUnit">Temperature Type: Celsius</span>
+                    </a>
+                </li>
+                <li>
+                    <a href="#" id="toggleWindSpeed">
+                        <i class='bx bx-wind'></i>
+                        <span class="bar-item" id="windSpeedUnit">Wind Speed Type: mph</span>
+                    </a>
+                </li>
+                <li>
+                    <a href="#" id="shareBtn">
+                        <i class='bx bx-share'></i>
+                        <span class="bar-item">Share</span>
+                    </a>
+                </li>
+                <li>
+                    <a href="#" id="clearCookies">
+                        <i class='bx bx-cookie'></i>
+                        <span class="bar-item">Clear Cookies</span>
+                    </a>
+                </li>
+            </ul>
+        </div>
+    </div>
+
+    <script>
+        class Settings {
+            constructor() {
+                this.cog = document.querySelector('#cog');
+                this.sidebar = document.querySelector('.sidebar');
+                this.tempUnitBtn = document.querySelector('#toggleTemp');
+                this.windSpeedUnitBtn = document.querySelector('#toggleWindSpeed');
+                this.shareBtn = document.querySelector('#shareBtn');
+                this.clearCookiesBtn = document.querySelector('#clearCookies');
+                this.favoritesDropdown = document.querySelector('#favoritesDropdown');
+                this.favoritesList = document.querySelector('#favoritesList');
+                this.init();
+            }
+
+            init() {
+                this.cog.onclick = () => {
+                    this.sidebar.classList.toggle('collapsed');
+                    const sidebarContent = document.querySelector('.sidebar .content');
+                    if (this.sidebar.classList.contains('collapsed')) {
+                        sidebarContent.style.opacity = '0'; // Hide sidebar content when collapsed
+                    } else {
+                        sidebarContent.style.opacity = '1'; // Show sidebar content when uncollapsed
+                    }
+                };
+
+                this.tempUnitBtn.onclick = () => {
+                    let tempUnitSpan = document.querySelector('#tempUnit');
+                    if (tempUnitSpan.innerText.includes("Celsius")) {
+                        tempUnitSpan.innerText = "Temperature Type: Fahrenheit";
+                    } else {
+                        tempUnitSpan.innerText = "Temperature Type: Celsius";
+                    }
+                    // Call the searchLocation method when temperature unit is toggled
+                    this.searchLocation('currentLocation');
+                };
+
+                this.windSpeedUnitBtn.onclick = () => {
+                    let windSpeedUnitSpan = document.querySelector('#windSpeedUnit');
+                    if (windSpeedUnitSpan.innerText.includes("mph")) {
+                        windSpeedUnitSpan.innerText = "Wind Speed Type: kph";
+                    } else {
+                        windSpeedUnitSpan.innerText = "Wind Speed Type: mph";
+                    }
+                    // Call the searchLocation method when wind speed unit is toggled
+                    this.searchLocation('currentLocation');
+                };
+
+                this.shareBtn.onclick = async () => {
+                    try {
+                        if (navigator.share) {
+                            await navigator.share({
+                                title: 'Check out this awesome weather app!',
+                                text: 'Get the latest weather updates with this app.',
+                                url: window.location.href
+                            });
+                            console.log('Shared successfully');
+                        } else {
+                            throw new Error('Web Share API is not supported in this browser.');
+                        }
+                    } catch (error) {
+                        console.error('Error sharing:', error);
+                        // Handle any errors that occur during sharing
+                        alert('An error occurred while sharing. Please try again later.');
+                    }
+                };
+
+                this.clearCookiesBtn.onclick = () => {
+                    let confirmation = window.confirm("Are you sure you want to clear cookies?");
+                    if (confirmation) {
+                        let cookies = document.cookie.split("; ");
+                        for (let i = 0; i < cookies.length; i++) {
+                            let cookie = cookies[i];
+                            let eqPos = cookie.indexOf("=");
+                            let name = eqPos > -1 ? cookie.substr(0, eqPos) : cookie;
+                            document.cookie = name + "=;expires=Thu, 01 Jan 1970 00:00:00 GMT";
+                        }
+                        alert("Cookies cleared successfully!");
+                    }
+                };
+
+                // Load favorites from cookies
+                this.loadFavorites();
+            }
+
+            loadFavorites() {
+                const favoritesCookie = this.getCookie('favorites');
+                if (favoritesCookie) {
+                    const favorites = favoritesCookie.split(',');
+                    favorites.forEach(location => {
+                        this.addToFavoritesDropdown(location);
+                    });
+                }
+            }
+
+            addToFavoritesDropdown(location) {
+                const option = document.createElement('a');
+                option.href = '#';
+                option.textContent = location;
+                option.onclick = () => {
+                    this.searchLocation(location);
+                }
+                this.favoritesList.appendChild(option);
+            }
+
+            searchLocation(location) {
+                // Get the temperature value and wind speed from your data source
+                // I think '25' & '10' can be replaced with the variable used for the return value of the search.
+                let temperatureCelsius = 25;
+                let windSpeedMph = 10;
+
+                // Determine the current temperature unit
+                let tempUnitSpan = document.querySelector('#tempUnit');
+                let isCelsius = tempUnitSpan.innerText.includes("Celsius");
+
+                // If the temperature unit is Fahrenheit, convert the temperature value to Fahrenheit
+                if (!isCelsius) {
+                    temperatureCelsius = (temperatureCelsius * 9 / 5) + 32; // Convert Celsius to Fahrenheit
+                }
+
+                // Determine the current wind speed unit
+                let windSpeedUnitSpan = document.querySelector('#windSpeedUnit');
+                let isMph = windSpeedUnitSpan.innerText.includes("mph");
+
+                // If the wind speed unit is not Mph (meaning it's kph), convert the wind speed value to kph
+                if (!isMph) {
+                    windSpeedMph *= 1.60934; // Convert mph to kph
+                }
+
+                // Update the temperature and wind speed displays
+                let temperatureDisplay = document.querySelector('#temperatureDisplay');
+                temperatureDisplay.textContent = `Temperature: ${temperatureCelsius.toFixed(2)} ${isCelsius ? 'Celsius' : 'Fahrenheit'}`;
+
+                let windSpeedDisplay = document.querySelector('#windSpeedDisplay');
+                windSpeedDisplay.textContent = `Wind Speed: ${windSpeedMph.toFixed(2)} ${isMph ? 'mph' : 'kph'}`;
+
+                // Additional calculations or actions based on the temperature and wind speed values can be done here
+                console.log("Searching location: ", location);
+            }
+
+            getCookie(name) {
+                const value = `; ${document.cookie}`;
+                const parts = value.split(`; ${name}=`);
+                if (parts.length === 2) return parts.pop().split(';').shift();
+            }
+        }
+
+        let settings = new Settings();
+    </script>
+</body>
+
+</html>

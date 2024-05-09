@@ -1,0 +1,99 @@
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+.sidebar {
+  position: absolute;
+  top: 0;
+  right: 0;
+  height: 100vh;
+  width: 250px;
+  background-color: #12171e;
+  padding: 0.4rem 0.8rem;
+  transition: width 0.5s ease;
+  /* Only transition width */
+  z-index: 1;
+  /* Set a higher z-index */
+  overflow: hidden;
+  /* Hide overflowing content */
+}
+
+.sidebar #cog {
+  color: #fff;
+  cursor: pointer;
+}
+
+.sidebar.collapsed {
+  width: 50px;
+  /* Adjust as needed */
+}
+.sidebar .content {
+  opacity: 1;
+  /* Initially visible */
+  transition: opacity 0.5s ease;
+  /* Add opacity transition */
+}
+
+.sidebar .top {
+  display: flex;
+  justify-content: flex-start;
+  align-items: center;
+  margin-bottom: 1rem;
+  padding-right: 5px;
+}
+
+.top .logo i {
+  font-size: 2rem;
+  margin-right: 5px;
+}
+
+.top h1 {
+  color: #fff;
+  font-size: 1.5rem;
+}
+
+.sidebar ul {
+  padding: 0;
+  list-style: none;
+}
+
+.sidebar ul li {
+  margin: 0.5rem 0;
+}
+
+.sidebar ul li a {
+  display: flex;
+  align-items: center;
+  color: #fff;
+  text-decoration: none;
+  border-radius: 0.8rem;
+  padding: 0.5rem;
+  transition: background-color 0.3s ease;
+}
+
+.sidebar ul li a:hover {
+  background-color: #fff;
+  color: #12171e;
+}
+
+.sidebar ul li a i {
+  min-width: 50px;
+  text-align: center;
+  height: 50px;
+  border-radius: 12px;
+  line-height: 50px;
+  margin-right: 0.5rem;
+}
+
+.temp-type,
+.wind-speed {
+  margin-left: 0.5rem;
+}
+
+.sidebar.collapsed .content {
+  opacity: 0;
+  pointer-events: none;
+  /* Disable pointer events when collapsed */
+}
