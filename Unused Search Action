@@ -1,0 +1,53 @@
+import tkinter as tk
+from tkinter import messagebox
+import requests
+from geopy.geocoders import Nominatim
+
+class SearchAction:
+    def __init__(self):
+        self.geolocator = Nominatim(user_agent="weather_app")
+
+    def get_coordinates(self, location):
+        location = self.geolocator.geocode(location)
+        if location:
+            return location.latitude, location.longitude
+        else:
+            return None, None
+
+    def get_forecast(self, latitude, longitude):
+        url = f"https://api.weather.gov/gridpoints/TOP/{latitude},{longitude}/forecast"
+        try:
+            response = requests.get(url)
+            response.raise_for_status()
+            data = response.json()
+            return data
+        except requests.exceptions.RequestException:
+            return None
+
+    def show_forecast_popup(self, location, periods):
+        root = tk.Tk()
+        root.withdraw()  # Hide the main window
+        forecast_text = ""
+        for period in periods:
+            forecast_text += f"Name: {period.get('name', 'N/A')}\n"
+            forecast_text += f"Detailed Forecast: {period.get('detailedForecast', 'N/A')}\n"
+            forecast_text += "-----------------------------------\n"
+        messagebox.showinfo("Weather Forecast for " + location, forecast_text)
+
+    def main(self):
+        while True:
+            location = input("Enter city, state, or ZIP code: ")
+            latitude, longitude = self.get_coordinates(location)
+            if latitude is not None and longitude is not None:
+                forecast_data = self.get_forecast(latitude, longitude)
+                if forecast_data:
+                    periods = forecast_data.get('properties', {}).get('periods', [])
+                    if periods:
+                        self.show_forecast_popup(location, periods)
+                        break
+            print("Unable to fetch forecast data for the provided location. Please try again.")
+
+if __name__ == "__main__":
+    weather_app = SearchAction()
+    weather_app.main()
+    
